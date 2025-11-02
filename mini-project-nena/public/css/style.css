@@ -1,0 +1,311 @@
+:root {
+    --tosca-primary: #20B2AA;
+    --tosca-light: #E0F2F1;
+    --tosca-dark: #008080;
+    --tosca-accent: #48D1CC;
+}
+
+body {
+    background: linear-gradient(135deg, var(--tosca-light) 0%, #ffffff 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding-top: 76px;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(32, 178, 170, 0.1);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(32, 178, 170, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--tosca-dark) !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--tosca-primary);
+}
+
+.navbar-toggler {
+    border: none;
+    color: var(--tosca-primary);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.nav-buttons .btn {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-login {
+    background-color: var(--tosca-primary);
+    border-color: var(--tosca-primary);
+    color: white;
+}
+
+.btn-login:hover {
+    background-color: var(--tosca-dark);
+    border-color: var(--tosca-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(32, 178, 170, 0.3);
+}
+
+.btn-register {
+    border-color: var(--tosca-primary);
+    color: var(--tosca-primary);
+}
+
+.btn-register:hover {
+    background-color: var(--tosca-light);
+    color: var(--tosca-dark);
+    border-color: var(--tosca-dark);
+    transform: translateY(-2px);
+}
+
+.welcome-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(32, 178, 170, 0.15);
+    padding: 3rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    border-top: 5px solid var(--tosca-primary);
+    transition: transform 0.3s ease;
+    margin: 2rem auto;
+}
+
+.welcome-container:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    color: var(--tosca-dark);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.lead {
+    color: #555;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.btn-primary {
+    background-color: var(--tosca-primary);
+    border-color: var(--tosca-primary);
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--tosca-dark);
+    border-color: var(--tosca-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(32, 178, 170, 0.3);
+}
+
+.btn-outline-secondary {
+    border-color: var(--tosca-primary);
+    color: var(--tosca-primary);
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--tosca-light);
+    color: var(--tosca-dark);
+    border-color: var(--tosca-dark);
+    transform: translateY(-2px);
+}
+
+footer {
+    color: var(--tosca-dark);
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1.5rem 0;
+    background-color: rgba(224, 242, 241, 0.5);
+    width: 100%;
+}
+
+.welcome-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--tosca-primary);
+}
+
+.wave-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: -1;
+}
+
+.wave-decoration svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+}
+
+.wave-decoration .shape-fill {
+    fill: var(--tosca-light);
+}
+
+/* Features Section */
+.features-section {
+    padding: 4rem 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-top: 3rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid rgba(32, 178, 170, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(32, 178, 170, 0.15);
+    border-color: var(--tosca-primary);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--tosca-primary);
+    margin-bottom: 1.5rem;
+}
+
+.feature-title {
+    color: var(--tosca-dark);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-text {
+    color: #666;
+    line-height: 1.6;
+}
+
+.card-post {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(32, 178, 170, 0.1);
+    margin-bottom: 1.8rem;
+    padding: 1.5rem;
+    border-left: 5px solid var(--tosca-primary);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(32, 178, 170, 0.2);
+}
+
+.card-post h5 {
+    color: var(--tosca-dark);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.card-post p {
+    color: #555;
+    line-height: 1.7;
+}
+
+.card-post small.text-muted {
+    font-size: 0.85rem;
+    color: #777 !important;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #333;
+    font-weight: 600;
+}
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    font-weight: 600;
+}
+.btn-logout {
+    border-color: #dc3545;
+    color: #dc3545;
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+.btn-logout:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .welcome-container {
+        padding: 2rem 1.5rem;
+    }
+    
+    .btn-primary, .btn-outline-secondary {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+    
+    .d-flex.justify-content-center.gap-3 {
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+    
+    .features-section {
+        padding: 2rem 0;
+    }
+    
+    .nav-buttons {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .nav-buttons .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+}
