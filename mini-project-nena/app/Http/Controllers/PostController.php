@@ -4,22 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth; // <-- Gunakan Auth
 
 class PostController extends Controller
 {
     /**
-     * Menampilkan dashboard (daftar postingan).
+     * Menampilkan dashboard dengan postingan milik user.
+     * Middleware 'auth' sudah melindungi rute ini.
      */
     public function index()
     {
-        if (!session()->has('user')) {
-            return redirect('/login')->with('error', 'Silakan login dulu!');
-        }
-        $user = session('user');
-
+        // 'auth()->id()' akan mengambil ID user yang sedang login
+        // (baik dari session atau cookie "remember me")
         $posts = DB::table('posts')
-            ->where('user_id', $user->id_user)
+            ->where('user_id', auth()->id()) // Gunakan auth()->id()
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -28,36 +26,27 @@ class PostController extends Controller
 
     /**
      * Menampilkan form untuk membuat postingan baru.
+     * Middleware 'auth' sudah melindungi rute ini.
      */
     public function create()
     {
-        if (!session()->has('user')) {
-            return redirect('/login')->with('error', 'Silakan login dulu!');
-        }
+        // Kita tidak perlu cek session lagi, middleware sudah melakukannya
         return view('posts.create');
     }
 
     /**
-     * Menyimpan postingan baru ke database.
+     * Menyimpan postingan baru.
+     * Middleware 'auth' sudah melindungi rute ini.
      */
     public function store(Request $request)
     {
-        $user = session('user');
-        if (!$user) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu');
-        }
-
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'title' => 'required|string|max:255',
             'body'  => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
         DB::table('posts')->insert([
-            'user_id'    => $user->id_user,
+            'user_id'    => auth()->id(), // Gunakan auth()->id()
             'title'      => $request->title,
             'body'       => $request->body,
             'created_at' => now(),
@@ -67,52 +56,11 @@ class PostController extends Controller
         return redirect('/dashboard')->with('success', 'Postingan berhasil dibuat!');
     }
 
-    // --- INI FUNGSI-FUNGSI BARU YANG HILANG ---
-
     /**
      * Menampilkan form untuk mengedit postingan.
      */
     public function edit($id)
     {
-        if (!session()->has('user')) {
-            return redirect('/login')->with('error', 'Silakan login dulu!');
-        }
-        $user = session('user');
-
-        // Ambil data postingan yang mau diedit
-        $post = DB::table('posts')->where('id_post', $id)->first();
-
-        // Keamanan: Cek apakah postingan ada
-        if (!$post) {
-            return redirect('/dashboard')->with('error', 'Postingan tidak ditemukan.');
-        }
-
-        // Keamanan: Cek apakah postingan ini milik user yang login
-        if ($post->user_id != $user->id_user) {
-            return redirect('/dashboard')->with('error', 'Anda tidak punya izin untuk mengedit postingan ini.');
-        }
-
-        // Jika aman, tampilkan view edit dengan data $post
-        return view('posts.edit', ['post' => $post]);
-    }
-
-    /**
-     * Mengupdate postingan di database.
-     */
-    public function update(Request $request, $id)
-    {
-        if (!session()->has('user')) {
-            return redirect('/login')->with('error', 'Silakan login dulu!');
-        }
-        $user = session('user');
-
-        // Validasi input baru
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'body'  => 'required|string',
-        ]);
-
-        // Ambil postingan yang mau diupdate
         $post = DB::table('posts')->where('id_post', $id)->first();
 
         // Keamanan: Cek postingan ada
@@ -121,11 +69,36 @@ class PostController extends Controller
         }
 
         // Keamanan: Cek kepemilikan
-        if ($post->user_id != $user->id_user) {
+        if ($post->user_id != auth()->id()) {
             return redirect('/dashboard')->with('error', 'Anda tidak punya izin.');
         }
 
-        // Update data di database
+        return view('posts.edit', compact('post'));
+    }
+
+    /**
+     * Mengupdate postingan di database.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body'  => 'required|string',
+        ]);
+
+        $post = DB::table('posts')->where('id_post', $id)->first();
+
+        // Keamanan: Cek postingan ada
+        if (!$post) {
+            return redirect('/dashboard')->with('error', 'Postingan tidak ditemukan.');
+        }
+
+        // Keamanan: Cek kepemilikan
+        if ($post->user_id != auth()->id()) {
+            return redirect('/dashboard')->with('error', 'Anda tidak punya izin.');
+        }
+
+        // Update data
         DB::table('posts')->where('id_post', $id)->update([
             'title'      => $request->title,
             'body'       => $request->body,
@@ -136,16 +109,10 @@ class PostController extends Controller
     }
 
     /**
-     * Menghapus postingan dari database.
+     * Menghapus postingan.
      */
     public function destroy($id)
     {
-        if (!session()->has('user')) {
-            return redirect('/login')->with('error', 'Silakan login dulu!');
-        }
-        $user = session('user');
-
-        // Ambil postingan
         $post = DB::table('posts')->where('id_post', $id)->first();
 
         // Keamanan: Cek postingan ada
@@ -154,7 +121,7 @@ class PostController extends Controller
         }
 
         // Keamanan: Cek kepemilikan
-        if ($post->user_id != $user->id_user) {
+        if ($post->user_id != auth()->id()) {
             return redirect('/dashboard')->with('error', 'Anda tidak punya izin.');
         }
 
@@ -164,4 +131,3 @@ class PostController extends Controller
         return redirect('/dashboard')->with('success', 'Postingan berhasil dihapus!');
     }
 }
-

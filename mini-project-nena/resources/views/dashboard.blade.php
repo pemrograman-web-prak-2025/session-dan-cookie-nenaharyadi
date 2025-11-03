@@ -20,7 +20,12 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="nav-buttons ms-auto d-flex gap-2">
+                <div class="nav-buttons ms-auto d-flex gap-2 align-items-center">
+                    
+                    <button id="toggle-mode" class="btn btn-toggle-mode" title="Ganti Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
                     <a href="/posts/create" class="btn btn-login">
                         <i class="fas fa-plus me-1"></i>Buat Postingan
                     </a>
@@ -83,6 +88,52 @@
         </div> 
     </div> 
 
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const body = document.body;
+        const btn = document.getElementById("toggle-mode");
+        const icon = btn.querySelector("i");
+
+        // 1. Baca mode terakhir dari cookie
+        const currentMode = getCookie("theme") || "light";
+        applyTheme(currentMode);
+
+        // 2. Tambahkan event listener ke tombol
+        btn.addEventListener("click", function() {
+            const newMode = body.classList.contains("dark-mode") ? "light" : "dark";
+            applyTheme(newMode);
+            // 3. Simpan pilihan ke cookie
+            setCookie("theme", newMode, 365);
+        });
+
+        // Fungsi untuk menerapkan tema
+        function applyTheme(mode) {
+            if (mode === "dark") {
+                body.classList.add("dark-mode");
+                icon.classList.remove("fa-moon");
+                icon.classList.add("fa-sun");
+            } else {
+                body.classList.remove("dark-mode");
+                icon.classList.remove("fa-sun");
+                icon.classList.add("fa-moon");
+            }
+        }
+
+        // Fungsi helper untuk menyimpan cookie
+        function setCookie(name, value, days) {
+            const expires = new Date(Date.now() + days*24*60*60*1000).toUTCString();
+            document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+        }
+
+        // Fungsi helper untuk membaca cookie
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

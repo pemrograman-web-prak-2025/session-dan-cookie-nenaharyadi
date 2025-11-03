@@ -14,7 +14,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-pen-nib"></i>
-                Aplikasi Postingan
+                MiniBlog
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

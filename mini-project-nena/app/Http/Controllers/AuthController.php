@@ -41,37 +41,32 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember'); // cek checkbox
+        $remember = $request->has('remember'); // Cek checkbox "Ingat saya"
 
         if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate(); // regenerasi session untuk keamanan
+            $request->session()->regenerate(); // Regenerasi session untuk keamanan
             return redirect()->intended('dashboard')->with('success', 'Login berhasil!');
         }
 
         return back()->with('error', 'Email atau password salah.');
     }
 
-    // --- DASHBOARD ---
+    // --- DASHBOARD (Fungsi ini tidak terpakai jika web.php ke PostController) ---
     public function dashboard()
     {
-        // Cek user yang sedang login pakai Auth, bukan Session
         if (!Auth::check()) {
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
-
-        // Ambil data user aktif
         $user = Auth::user();
-
-        // Kamu bisa ambil post milik user ini (contoh kalau pakai model Post)
-        $posts = \App\Models\Post::where('user_id', $user->id)->get();
-
-        return view('dashboard', compact('user', 'posts'));
+        // $posts = \App\Models\Post::where('user_id', $user->id)->get(); // Contoh jika pakai Model
+        // return view('dashboard', compact('user', 'posts'));
+        return "Fungsi dashboard di AuthController. Harusnya ke PostController.";
     }
 
     // --- LOGOUT ---
     public function logout(Request $request)
     {
-        Auth::logout(); // hapus cookie remember me juga
+        Auth::logout(); // Ini akan menghapus session & cookie remember me
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

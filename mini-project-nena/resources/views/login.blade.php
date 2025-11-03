@@ -58,7 +58,7 @@
 
         <div class="text-center mt-4">
             <p class="text-muted mb-1">
-                Belum punya akun? <a href="/register">Daftar di sini</a>
+                Belum punya akun? <a href="{{ route('register.form') }}">Daftar di sini</a>
             </p>
 
             <p class="text-muted">
